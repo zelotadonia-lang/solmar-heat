@@ -65,12 +65,16 @@ export function updatePeds(G, dt) {
       const d = Math.hypot(ped.x - player.x, ped.y - player.y);
       if (d < 260) threat = player;
     }
-    if (threat) ped.flee = 1.2;
+    if (threat) { ped.flee = 1.2; ped.fleeFrom = threat; }
     if (ped.flee > 0) {
       ped.flee -= dt;
-      const away = Math.atan2(ped.y - threat.y, ped.x - threat.x);
+      // The threat is only set on the frame it is near: keep fleeing from
+      // where it was, since flee outlives the sighting by up to 1.2 s.
+      const from = ped.fleeFrom || player;
+      const away = Math.atan2(ped.y - from.y, ped.x - from.x);
       ped.angle = away;
       world.moveCircle(ped, Math.cos(away) * 130 * dt, Math.sin(away) * 130 * dt, 12);
+      if (ped.flee <= 0) ped.fleeFrom = null;
       continue;
     }
     if (ped.wait > 0) { ped.wait -= dt; continue; }

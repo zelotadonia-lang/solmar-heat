@@ -303,7 +303,7 @@ export function createRenderer(canvas) {
       : G.mission
         ? `${G.mission.def.title}: ${G.mission.def.stages[G.mission.stage].label}`
         : G.storyDone ? 'Bebas. Port Solmar milikmu.' : 'Cari pekerjaan. Tekan T dekat penumpang taksi.';
-    panel(14, 120, Math.min(520, 40 + obj.length * 7.4), 34);
+    panel(14, 120, Math.min(560, 40 + obj.length * 7.4 + (target ? 64 : 0)), 34);
     text(obj, 26, 143, 15, PALETTE.hudText, 'left', '600');
     if (target) {
       const d = Math.round(Math.hypot(p.x - target.x, p.y - target.y));
